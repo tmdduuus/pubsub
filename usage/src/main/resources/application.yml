@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: publisher
+    
+azure:
+  eventgrid:
+    endpoint: ${EVENT_GRID_ENDPOINT}
+    key: ${EVENT_GRID_KEY}
+    topic-name: ${EVENT_GRID_TOPIC}
+
+server:
+  port: ${SERVER_PORT:8080}

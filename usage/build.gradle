@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':common')
+}
+
+bootJar {
+    archiveFileName = "usage.jar"
+}

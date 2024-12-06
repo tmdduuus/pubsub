@@ -1,0 +1,25 @@
+[2024-12-06 15:51:06] Ingress 생성 중: usage-svc
+ingress.networking.k8s.io/usage-svc-ingress configured (dry run)
+ingress.networking.k8s.io/usage-svc-ingress unchanged
+[2024-12-06 15:51:06] 인증서 발급 대기 중...
+[2024-12-06 15:51:06] 인증서 상태:
+status:
+  conditions:
+  - lastTransitionTime: "2024-12-06T06:37:29Z"
+    message: Issuing certificate as Secret does not exist
+    observedGeneration: 1
+    reason: DoesNotExist
+    status: "True"
+    type: Issuing
+  - lastTransitionTime: "2024-12-06T06:37:29Z"
+    message: Issuing certificate as Secret does not exist
+    observedGeneration: 1
+    reason: DoesNotExist
+    status: "False"
+    type: Ready
+  nextPrivateKeySecretName: usage-svc-tls-tsdn9
+[2024-12-06 15:51:07] Challenge 상태:
+NAME                                    STATE     DOMAIN                           REASON                                                                               AGE
+usage-svc-tls-1-2555229517-1072312376   pending   usage-svc.20.249.67.198.nip.io   Waiting for HTTP-01 challenge propagation: wrong status code '500', expected '200'   13m
+[2024-12-06 15:51:07] 인증서 발급 실패: Issuing certificate as Secret does not exist
+[2024-12-06 15:51:07] 인증서 발급 대기 중... (1/60)

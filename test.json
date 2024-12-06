@@ -1,0 +1,13 @@
+[{
+  "id": "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66",
+  "topic": "/subscriptions/test-subscription",
+  "subject": "",
+  "data": {
+    "validationCode": "512d38b6-c7b8-40c8-89fe-f46f9e9622b6"
+  },
+  "eventType": "Microsoft.EventGrid.SubscriptionValidationEvent",
+  "eventTime": "2024-12-06T12:35:04.5235322Z",
+  "metadataVersion": "1",
+  "dataVersion": "2"
+}]
+

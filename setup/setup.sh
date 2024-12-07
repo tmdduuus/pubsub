@@ -70,6 +70,8 @@ setup_environment() {
    MONGODB_PASSWORD="Passw0rd"
    DB_SECRET_NAME="${userid}-dbsecret"
 
+   ALERT_PUBIP="20.39.205.38"
+
    LOG_FILE="deployment_${NAME}.log"
 
    log "환경 변수 설정 완료"
@@ -425,6 +427,7 @@ spec:
    port: 80
    targetPort: $port
  type: LoadBalancer
+ loadBalancerIP: ${ALERT_PUBIP}
 EOF
 
    # Deployment Ready 대기

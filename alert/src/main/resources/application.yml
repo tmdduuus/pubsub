@@ -8,9 +8,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://${MONGODB_USER:mongodb}:${MONGODB_PASSWORD:mongodb}@${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/${MONGODB_DB:telecomdb}?authSource=admin
-
 server:
   port: ${SERVER_PORT:80}
+  servlet:
+    context-path: /
 management:
   endpoints:
     web:

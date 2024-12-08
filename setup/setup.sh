@@ -60,8 +60,6 @@ setup_environment() {
    EG_TOPIC="$NAME-topic"
    EG_SUB="$NAME-subscriber"
 
-   PROXY_IP="4.217.249.140"
-
    # MongoDB 설정
    MONGODB_HOST="${NAME}-mongodb"
    MONGODB_PORT="27017"
@@ -70,7 +68,10 @@ setup_environment() {
    MONGODB_PASSWORD="Passw0rd"
    DB_SECRET_NAME="${userid}-dbsecret"
 
+   # Event Grid IPs
+   PROXY_IP="4.217.249.140"
    ALERT_PUBIP="20.39.205.38"
+   SUB_ENDPOINT=""
 
    LOG_FILE="deployment_${NAME}.log"
 
@@ -441,7 +442,7 @@ EOF
 # Event Grid Subscriber 설정
 setup_event_grid_subscriber() {
     log "Event Grid Subscriber 설정 중..."
-    local subscriber_endpoint="https://alert-svc.${PROXY_IP}.nip.io/api/events/usage"
+    SUB_ENDPOINT="https://${USERID}.${PROXY_IP}.nip.io/api/events/usage"
 
     # 기존 subscription 확인
     local subscription_exists=$(az eventgrid event-subscription show \
@@ -466,7 +467,7 @@ setup_event_grid_subscriber() {
     az eventgrid event-subscription create \
         --name $EG_SUB \
         --source-resource-id $(az eventgrid topic show --name $EG_TOPIC -g $RESOURCE_GROUP --query "id" -o tsv) \
-        --endpoint $subscriber_endpoint \
+        --endpoint $SUB_ENDPOINT \
         --endpoint-type webhook \
         --included-event-types UsageExceeded UsageAlert \
         --max-delivery-attempts 3 \
@@ -628,7 +629,7 @@ print_results() {
     log "Application URLs:"
     log "usage-svc URL: http://${usage_ip}/swagger-ui.html"
     log "alert-svc URL: http://${alert_ip}/swagger-ui.html"
-    log "Event Grid Subscription Endpoint: https://alert-svc.${PROXY_IP}.nip.io/api/events/usage"
+    log "Event Grid Subscription Endpoint: ${SUB_ENDPOINT}"
 }
 
 # 메인 실행 함수
@@ -642,7 +643,7 @@ main() {
        echo "Error: userid는 영문 소문자와 숫자만 사용할 수 있습니다."
        exit 1
    fi
-   
+
    # 환경 설정
    setup_environment "$1"
 

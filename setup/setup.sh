@@ -91,7 +91,7 @@ setup_acr_permission() {
         --resource-group $RESOURCE_GROUP \
         --query servicePrincipalProfile.clientId -o tsv)
     log "SP_ID-->${SP_ID}"
-    if [ -z "${SP_ID}" ]; then
+    if [ "${SP_ID}" = "msi" ]; then
         log "AKS가 Managed Identity를 사용하고 있습니다."
         # ACR 권한이 이미 있다고 가정하고 진행
         log "ACR pull 권한이 이미 설정되어 있다고 가정합니다."

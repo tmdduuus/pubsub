@@ -69,8 +69,8 @@ setup_environment() {
    DB_SECRET_NAME="${userid}-dbsecret"
 
    # Event Grid
-   STORAGE_ACCOUNT="${userid}-storage"
-   DEAD_LETTER="${userid}-deadletter"
+   STORAGE_ACCOUNT="${userid}storage"
+   DEAD_LETTER="${userid}deadletter"
 
    PROXY_IP="4.217.249.140"
    ALERT_PUBIP="20.39.205.38"

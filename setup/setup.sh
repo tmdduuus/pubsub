@@ -68,7 +68,10 @@ setup_environment() {
    MONGODB_PASSWORD="Passw0rd"
    DB_SECRET_NAME="${userid}-dbsecret"
 
-   # Event Grid IPs
+   # Event Grid
+   STORAGE_ACCOUNT="${userid}-storage"
+   DEAD_LETTER="${userid}-deadletter"
+
    PROXY_IP="4.217.249.140"
    ALERT_PUBIP="20.39.205.38"
    SUB_ENDPOINT=""
@@ -135,7 +138,7 @@ setup_common_resources() {
 
   # Storage Account connection string 가져오기
   local storage_conn_str=$(az storage account show-connection-string \
-      --name dggastorage \
+      --name $STORAGE_ACCOUNT \
       --resource-group $RESOURCE_GROUP \
       --query connectionString \
       --output tsv)
@@ -143,14 +146,14 @@ setup_common_resources() {
 
   # deadletter 컨테이너 존재 여부 확인
   local container_exists=$(az storage container exists \
-      --name deadletter \
+      --name $DEAD_LETTER \
       --connection-string "$storage_conn_str" \
       --query "exists" -o tsv)
 
   if [ "$container_exists" != "true" ]; then
       # deadletter 컨테이너 생성
       az storage container create \
-          --name deadletter \
+          --name $DEAD_LETTER \
           --connection-string "$storage_conn_str" \
           --output none
       check_error "Storage container 생성 실패"
@@ -457,7 +460,7 @@ setup_event_grid_subscriber() {
 
     # Storage Account ID 가져오기
     local storage_id=$(az storage account show \
-        --name dggastorage \
+        --name $STORAGE_ACCOUNT \
         --resource-group $RESOURCE_GROUP \
         --query id \
         --output tsv)
@@ -472,7 +475,7 @@ setup_event_grid_subscriber() {
         --included-event-types UsageExceeded UsageAlert \
         --max-delivery-attempts 3 \
         --event-ttl 1440 \
-        --deadletter-endpoint "${storage_id}/blobServices/default/containers/deadletter" \
+        --deadletter-endpoint "${storage_id}/blobServices/default/containers/${DEAD_LETTER}" \
         --output none
     check_error "Event Grid Subscriber 생성 실패"
 
@@ -676,5 +679,3 @@ main() {
 
 # 스크립트 시작
 main "$@"
-
-

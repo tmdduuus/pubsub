@@ -136,6 +136,23 @@ setup_common_resources() {
       log "Event Grid Topic이 이미 존재합니다"
   fi
 
+
+  # Storage Account가 없으면 생성
+  STORAGE_EXISTS=$(az storage account show \
+      --name $STORAGE_ACCOUNT \
+      --resource-group $RESOURCE_GROUP \
+      --query name \
+      --output tsv 2>/dev/null)
+
+  if [ -z "$STORAGE_EXISTS" ]; then
+      az storage account create \
+          --name $STORAGE_ACCOUNT \
+          --resource-group $RESOURCE_GROUP \
+          --location $LOCATION \
+          --sku Standard_LRS
+      check_error "Storage Account 생성 실패"
+  fi
+
   # Storage Account connection string 가져오기
   local storage_conn_str=$(az storage account show-connection-string \
       --name $STORAGE_ACCOUNT \
